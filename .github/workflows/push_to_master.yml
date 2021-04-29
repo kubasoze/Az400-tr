@@ -4,12 +4,21 @@ on:
   push:
     branches:
     - master
+  pull_request:
+    
 
 jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
     environment: production
+    env:
+      ARM_TENANT_ID: 3f896bab-4764-4495-bd57-4c63e460302b
+      ARM_SUBSCRIPTION_ID: 785c8861-1a26-4cf3-a8c3-1b9ac6bea47b
+      ARM_CLIENT_ID: 7fb93334-df5d-4aa9-af16-26a9796778d2
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_ACCESS_KEY: ${{ secrets.TF_ARM_ACCESS_KEY }}
+      working-directory: ./infra
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
@@ -21,26 +30,30 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init
+      run: |
+        terraform init \
+        -backend-config="storage_account_name=az400terraform" \
+        -backend-config="container_name=az400terraform" \
+        -backend-config="key=infra.az400terraform" 
+      working-directory: ${{ env.working-directory }}
 
-    # Checks that all Terraform configuration files adhere to a canonical format
+    # # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
       run: terraform fmt -check
 
-    # Generates an execution plan for Terraform
+    # # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform plan
 
-      # On push to master, build or change infrastructure according to Terraform configuration files
-      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-    - name: Terraform Apply
-      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-      run: terraform apply -auto-approve
+    #   # On push to master, build or change infrastructure according to Terraform configuration files
+    #   # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    # - name: Terraform Apply
+    #   if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    #   run: terraform apply -auto-approve
