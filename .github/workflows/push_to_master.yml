@@ -39,9 +39,9 @@ jobs:
     - name: Terraform Init
       run: |
         terraform init \
-        -backend-config="storage_account_name=az400terraform" \
-        -backend-config="container_name=az400terraform" \
-        -backend-config="key=infra.az400terraform" 
+        -backend-config="storage_account_name=terraformaz400tst" \
+        -backend-config="container_name=terraform" \
+        -backend-config="key=infra.terraform" 
       working-directory: ${{ env.working-directory }}
 
     # # Checks that all Terraform configuration files adhere to a canonical format
