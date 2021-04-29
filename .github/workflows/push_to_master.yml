@@ -68,8 +68,8 @@ jobs:
     env:
       ARM_TENANT_ID: fcb3dfcf-1704-4438-9cd6-28e96201a2c1
       ARM_SUBSCRIPTION_ID: c4968192-f624-4c20-a0fe-36fde405fa62
-    #  ARM_CLIENT_ID: b0f2c47b-593c-4949-9b0a-4fe2917e5951
-    #  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_CLIENT_ID: b0f2c47b-593c-4949-9b0a-4fe2917e5951
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
@@ -88,3 +88,36 @@ jobs:
 
     - name: Check plans
       run: az appservice plan list
+
+  build:
+    name: 'Build'
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      ARM_TENANT_ID: fcb3dfcf-1704-4438-9cd6-28e96201a2c1
+      ARM_SUBSCRIPTION_ID: c4968192-f624-4c20-a0fe-36fde405fa62
+      ARM_CLIENT_ID: b0f2c47b-593c-4949-9b0a-4fe2917e5951
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      dotnet: '3.1.x'
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.dotnet }} 
+
+    - name: build
+      run: |
+        dotnet build .
+    - name: test
+      run: |
+        dotnet test .
