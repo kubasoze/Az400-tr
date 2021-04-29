@@ -60,7 +60,7 @@ jobs:
       working-directory: ${{ env.working-directory }}
 
 
-        check:
+  check:
     name: 'Check'
     needs: 'Terraform'
     runs-on: ubuntu-latest
