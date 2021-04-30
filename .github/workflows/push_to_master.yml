@@ -133,3 +133,15 @@ jobs:
         cd ./Az400api
         docker build . -t 400azureterraform.azurecr.io/testdemojs:${{ github.sha }}
         docker push 400azureterraform.azurecr.io/testdemojs:${{ github.sha }}
+
+
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'WebApp-az400'
+        images:  '400azureterraform.azurecr.io/testdemojs'
