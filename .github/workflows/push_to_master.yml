@@ -130,7 +130,6 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - name: push_container_registry
       run: |
-        #ls -ltr && pwd && AZ400api/
         cd ./AZ400api
         docker build . -t 400azureterraform.azurecr.io/testdemojs:${{ github.sha }}
         docker push 400azureterraform.azurecr.io/testdemojs:${{ github.sha }}
