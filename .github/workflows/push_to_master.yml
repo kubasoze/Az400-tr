@@ -121,3 +121,13 @@ jobs:
     - name: test
       run: |
         dotnet test .
+    - name: container_registry
+      uses: azure/docker-login@v1
+      with:
+        login-server: 400azureterraform.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    - name: push_container_registry
+      run: |
+        docker build . -t 400azureterraform.azurecr.io/testdemojs:${{ github.sha }}
+        docker push 400azureterraform.azurecr.io/testdemojs:${{ github.sha }}
