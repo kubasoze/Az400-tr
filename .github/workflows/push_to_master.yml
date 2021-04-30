@@ -135,12 +135,12 @@ jobs:
         docker push 400azureterraform.azurecr.io/testdemojs:${{ github.sha }}
 
 
-    - name: Azure login
+    - name: Azure logowanie
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Deploy
+    - name: Deploy azure
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'WebApp-az400js'
