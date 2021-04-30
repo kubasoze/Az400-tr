@@ -99,6 +99,7 @@ jobs:
       ARM_CLIENT_ID: b0f2c47b-593c-4949-9b0a-4fe2917e5951
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       dotnet: '3.1.x'
+      path_web: './Az400api'
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
