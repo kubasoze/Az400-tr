@@ -131,5 +131,6 @@ jobs:
     - name: push_container_registry
       run: |
         ls -ltr && pwd
+        cd ./AZ400api
         docker build . -t 400azureterraform.azurecr.io/testdemojs:${{ github.sha }}
         docker push 400azureterraform.azurecr.io/testdemojs:${{ github.sha }}
