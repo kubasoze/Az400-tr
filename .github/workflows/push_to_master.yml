@@ -143,5 +143,5 @@ jobs:
     - name: Deploy
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'WebApp-az400'
+        app-name: 'WebApp-az400js'
         images:  '400azureterraform.azurecr.io/testdemojs'
