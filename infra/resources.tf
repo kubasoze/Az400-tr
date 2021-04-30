@@ -7,6 +7,8 @@ resource "azurerm_app_service_plan" "az400serviceplanjs" {
   name                = "az400serviceplanjs"
   location            = azurerm_resource_group.az400terraform.location
   resource_group_name = azurerm_resource_group.az400terraform.name
+  kind = "Linux"
+  reserved = true
 
   sku {
     tier = "Standard"
